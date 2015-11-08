@@ -13,13 +13,19 @@
 #define AT91_DBGU 0xfffff200 /* AT91_BASE_DBGU0 */
 #elif defined(CONFIG_AT91_DEBUG_LL_DBGU1)
 #define AT91_DBGU 0xffffee00 /* AT91_BASE_DBGU1 */
-#else
+#elif defined(CONFIG_AT91_DEBUG_LL_DBGU2)
 /* On sama5d4, use USART3 as low level serial console */
 #define AT91_DBGU 0xfc00c000 /* SAMA5D4_BASE_USART3 */
+#else
+/* On sama5d2, use UART1 as low level serial console */
+#define AT91_DBGU 0xf8020000
 #endif
 
-/* Keep in sync with mach-at91/include/mach/hardware.h */
+#ifdef CONFIG_MMU
 #define AT91_IO_P2V(x) ((x) - 0x01000000)
+#else
+#define AT91_IO_P2V(x) (x)
+#endif
 
 #define AT91_DBGU_SR		(0x14)	/* Status Register */
 #define AT91_DBGU_THR		(0x1c)	/* Transmitter Holding Register */

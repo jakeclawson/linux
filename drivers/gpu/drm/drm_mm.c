@@ -403,7 +403,7 @@ static int check_free_hole(u64 start, u64 end, u64 size, unsigned alignment)
 		unsigned rem;
 
 		rem = do_div(tmp, alignment);
-		if (tmp)
+		if (rem)
 			start += alignment - rem;
 	}
 
@@ -825,7 +825,7 @@ static u64 drm_mm_dump_hole(struct seq_file *m, struct drm_mm_node *entry)
 		hole_start = drm_mm_hole_node_start(entry);
 		hole_end = drm_mm_hole_node_end(entry);
 		hole_size = hole_end - hole_start;
-		seq_printf(m, "%#llx-%#llx: %llu: free\n", hole_start,
+		seq_printf(m, "%#018llx-%#018llx: %llu: free\n", hole_start,
 			   hole_end, hole_size);
 		return hole_size;
 	}
@@ -846,7 +846,7 @@ int drm_mm_dump_table(struct seq_file *m, struct drm_mm *mm)
 	total_free += drm_mm_dump_hole(m, &mm->head_node);
 
 	drm_mm_for_each_node(entry, mm) {
-		seq_printf(m, "%#016llx-%#016llx: %llu: used\n", entry->start,
+		seq_printf(m, "%#018llx-%#018llx: %llu: used\n", entry->start,
 			   entry->start + entry->size, entry->size);
 		total_used += entry->size;
 		total_free += drm_mm_dump_hole(m, entry);
